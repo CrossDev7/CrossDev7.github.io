@@ -1,0 +1,591 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The HEAPS GOODS Co.</title>
+    <meta property="og:title" content="The HEAPS GOODS Co.">
+    <meta property="og:description" content="Creators of heaps good apps, experiences, businesses, and people.">
+    <meta property="og:image" content="https://cdn.simtheory.ai/image/upload/v1781495033/user_11629/heaps-goods-neon_ee813770.png">
+    <meta property="og:type" content="website">
+    <link rel="icon" href="https://cdn.simulationtheory.ai/gasset/?asset=img&prompt=retro%20futuristic%20neon%20H%20icon%208bit&w=64&h=64&style=pixel_art">
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background: #0a0a0f;
+            color: #e0e0e0;
+            font-family: 'Share Tech Mono', monospace;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(0, 0, 0, 0.15) 2px,
+                rgba(0, 0, 0, 0.15) 4px
+            );
+            pointer-events: none;
+            z-index: 100;
+        }
+
+        body::after {
+            content: '';
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(ellipse at center, transparent 50%, rgba(0,0,0,0.6) 100%);
+            pointer-events: none;
+            z-index: 99;
+        }
+
+        .container {
+            text-align: center;
+            z-index: 10;
+            padding: 20px;
+            max-width: 700px;
+            width: 100%;
+        }
+
+
+                .container {
+                    text-align: center;
+                    z-index: 10;
+                    padding: 20px;
+                    max-width: 700px;
+                    width: 100%;
+                }
+
+                h1 {
+                    font-family: 'Orbitron', sans-serif;
+                    font-size: clamp(28px, 6vw, 48px);
+                    font-weight: 900;
+                    letter-spacing: 0.15em;
+                    color: #ff0080;
+                    text-shadow: 0 0 10px rgba(255, 0, 128, 0.8), 0 0 40px rgba(255, 0, 128, 0.4), 0 0 80px rgba(255, 0, 128, 0.2);
+                    margin-bottom: 12px;
+                    margin-top: 0;
+                }
+
+                .tagline {
+                    font-family: 'Share Tech Mono', monospace;
+                    font-size: clamp(14px, 3vw, 20px);
+                    color: #00c8ff;
+                    letter-spacing: 0.15em;
+                    text-shadow: 0 0 8px rgba(0, 200, 255, 0.6), 0 0 30px rgba(0, 200, 255, 0.3);
+                    margin-bottom: 50px;
+                    line-height: 1.6;
+                    max-width: 500px;
+                    margin-left: auto;
+                    margin-right: auto;
+                }
+
+                .status-bar {
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    gap: 10px;
+                    font-size: 13px;
+                    color: #00ff88;
+                    letter-spacing: 0.1em;
+                    text-shadow: 0 0 8px rgba(0, 255, 136, 0.5);
+                }
+
+                .status-dot {
+                    width: 8px;
+                    height: 8px;
+                    background: #00ff88;
+                    border-radius: 50%;
+                    animation: pulse 2s ease-in-out infinite;
+                    box-shadow: 0 0 8px rgba(0, 255, 136, 0.8);
+                }
+
+
+                        .links {
+                            display: flex;
+                            gap: 24px;
+                            justify-content: center;
+                            margin-top: 40px;
+                            flex-wrap: wrap;
+                        }
+
+                        .links a {
+                            font-family: 'Orbitron', sans-serif;
+                            font-size: 13px;
+                            font-weight: 700;
+                            letter-spacing: 0.15em;
+                            text-transform: uppercase;
+                            color: #e0e0e0;
+                            text-decoration: none;
+                            padding: 10px 24px;
+                            border: 1px solid rgba(255, 0, 128, 0.4);
+                            background: rgba(255, 0, 128, 0.05);
+                            transition: all 0.3s ease;
+                            position: relative;
+                            cursor: pointer;
+                        }
+
+                        .links a:hover {
+                            color: #ff0080;
+                            border-color: #ff0080;
+                            background: rgba(255, 0, 128, 0.15);
+                            text-shadow: 0 0 10px rgba(255, 0, 128, 0.6);
+                            box-shadow: 0 0 20px rgba(255, 0, 128, 0.2), inset 0 0 20px rgba(255, 0, 128, 0.1);
+                        }
+
+                        .modal-overlay {
+                            position: fixed;
+                            top: 0; left: 0; right: 0; bottom: 0;
+                            background: rgba(0, 0, 0, 0.85);
+                            z-index: 200;
+                            display: none;
+                            align-items: center;
+                            justify-content: center;
+                            padding: 20px;
+                            animation: fadeInOverlay 0.3s ease;
+                        }
+
+                        .modal-overlay.active {
+                            display: flex;
+                        }
+
+                        @keyframes fadeInOverlay {
+                            from { opacity: 0; }
+                            to { opacity: 1; }
+                        }
+
+                        .modal-panel {
+                            background: #0d0d14;
+                            border: 1px solid rgba(255, 0, 128, 0.5);
+                            max-width: 600px;
+                            width: 100%;
+                            padding: 0;
+                            position: relative;
+                            animation: modalSlideIn 0.3s ease;
+                            box-shadow: 0 0 40px rgba(255, 0, 128, 0.15), inset 0 0 60px rgba(0, 0, 0, 0.5);
+                        }
+
+                        @keyframes modalSlideIn {
+                            from { transform: translateY(20px); opacity: 0; }
+                            to { transform: translateY(0); opacity: 1; }
+                        }
+
+                        .modal-header {
+                            display: flex;
+                            align-items: center;
+                            justify-content: space-between;
+                            padding: 16px 24px;
+                            border-bottom: 1px solid rgba(255, 0, 128, 0.3);
+                            background: rgba(255, 0, 128, 0.05);
+                        }
+
+                        .modal-header h2 {
+                            font-family: 'Orbitron', sans-serif;
+                            font-size: 16px;
+                            font-weight: 700;
+                            letter-spacing: 0.2em;
+                            color: #ff0080;
+                            text-shadow: 0 0 10px rgba(255, 0, 128, 0.5);
+                            margin: 0;
+                        }
+
+                        .modal-close {
+                            background: none;
+                            border: 1px solid rgba(255, 255, 255, 0.2);
+                            color: #e0e0e0;
+                            font-family: 'Share Tech Mono', monospace;
+                            font-size: 12px;
+                            letter-spacing: 0.1em;
+                            padding: 4px 12px;
+                            cursor: pointer;
+                            transition: all 0.2s ease;
+                        }
+
+                        .modal-close:hover {
+                            border-color: #ff0080;
+                            color: #ff0080;
+                            box-shadow: 0 0 10px rgba(255, 0, 128, 0.3);
+                        }
+
+                        .modal-body {
+                            padding: 24px;
+                            max-height: 60vh;
+                            overflow-y: auto;
+                        }
+
+                        .modal-body::-webkit-scrollbar {
+                            width: 4px;
+                        }
+
+                        .modal-body::-webkit-scrollbar-track {
+                            background: rgba(0, 0, 0, 0.3);
+                        }
+
+                        .modal-body::-webkit-scrollbar-thumb {
+                            background: rgba(255, 0, 128, 0.4);
+                        }
+
+                        .project-card {
+                            border: 1px solid rgba(0, 200, 255, 0.2);
+                            background: rgba(0, 200, 255, 0.03);
+                            padding: 20px;
+                            margin-bottom: 16px;
+                            transition: all 0.3s ease;
+                        }
+
+                        .project-card:hover {
+                            border-color: rgba(0, 200, 255, 0.5);
+                            background: rgba(0, 200, 255, 0.08);
+                            box-shadow: 0 0 20px rgba(0, 200, 255, 0.1);
+                        }
+
+                        .project-card:last-child {
+                            margin-bottom: 0;
+                        }
+
+                        .project-card h3 {
+                            font-family: 'Orbitron', sans-serif;
+                            font-size: 14px;
+                            font-weight: 700;
+                            letter-spacing: 0.15em;
+                            color: #00c8ff;
+                            text-shadow: 0 0 8px rgba(0, 200, 255, 0.4);
+                            margin-bottom: 8px;
+                        }
+
+                        .project-card p {
+                            font-size: 13px;
+                            color: #a0a0a0;
+                            line-height: 1.6;
+                            margin-bottom: 10px;
+                        }
+
+                        .project-tag {
+                            display: inline-block;
+                            font-size: 10px;
+                            letter-spacing: 0.1em;
+                            padding: 3px 10px;
+                            border: 1px solid rgba(0, 255, 136, 0.3);
+                            color: #00ff88;
+                            margin-right: 6px;
+                            margin-bottom: 4px;
+                        }
+
+                        .lab-item {
+                            border: 1px solid rgba(255, 0, 128, 0.2);
+                            background: rgba(255, 0, 128, 0.03);
+                            padding: 20px;
+                            margin-bottom: 16px;
+                            transition: all 0.3s ease;
+                        }
+
+                        .lab-item:hover {
+                            border-color: rgba(255, 0, 128, 0.5);
+                            background: rgba(255, 0, 128, 0.08);
+                            box-shadow: 0 0 20px rgba(255, 0, 128, 0.1);
+                        }
+
+                        .lab-item:last-child {
+                            margin-bottom: 0;
+                        }
+
+                        .lab-item h3 {
+                            font-family: 'Orbitron', sans-serif;
+                            font-size: 14px;
+                            font-weight: 700;
+                            letter-spacing: 0.15em;
+                            color: #ff0080;
+                            text-shadow: 0 0 8px rgba(255, 0, 128, 0.4);
+                            margin-bottom: 8px;
+                        }
+
+                        .lab-item p {
+                            font-size: 13px;
+                            color: #a0a0a0;
+                            line-height: 1.6;
+                            margin-bottom: 10px;
+                        }
+
+                        .lab-status {
+                            font-size: 10px;
+                            letter-spacing: 0.15em;
+                            padding: 3px 10px;
+                            border: 1px solid;
+                            display: inline-block;
+                        }
+
+                        .lab-status.active {
+                            border-color: rgba(0, 255, 136, 0.5);
+                            color: #00ff88;
+                        }
+
+                        .lab-status.experiment {
+                            border-color: rgba(255, 200, 0, 0.5);
+                            color: #ffc800;
+                        }
+
+                        .lab-status.prototype {
+                            border-color: rgba(0, 200, 255, 0.5);
+                            color: #00c8ff;
+                        }
+
+                        .contact-info {
+                            text-align: left;
+                        }
+
+                        .contact-info p {
+                            font-size: 14px;
+                            color: #a0a0a0;
+                            line-height: 1.8;
+                            margin-bottom: 16px;
+                        }
+
+                        .contact-link {
+                            display: flex;
+                            align-items: center;
+                            gap: 12px;
+                            padding: 14px 20px;
+                            border: 1px solid rgba(0, 200, 255, 0.2);
+                            background: rgba(0, 200, 255, 0.03);
+                            margin-bottom: 12px;
+                            text-decoration: none;
+                            color: #00c8ff;
+                            font-family: 'Share Tech Mono', monospace;
+                            font-size: 14px;
+                            letter-spacing: 0.05em;
+                            transition: all 0.3s ease;
+                        }
+
+                        .contact-link:hover {
+                            border-color: rgba(0, 200, 255, 0.5);
+                            background: rgba(0, 200, 255, 0.08);
+                            box-shadow: 0 0 20px rgba(0, 200, 255, 0.1);
+                            text-shadow: 0 0 8px rgba(0, 200, 255, 0.5);
+                        }
+
+                        .contact-link i {
+                            font-size: 16px;
+                            width: 20px;
+                            text-align: center;
+                        }
+
+                        .vhs-badge {
+                            position: fixed;
+                            bottom: 20px;
+                            right: 20px;
+                            font-family: 'Share Tech Mono', monospace;
+                            font-size: 11px;
+                            color: rgba(255, 255, 255, 0.2);
+                            letter-spacing: 0.2em;
+                            z-index: 10;
+                        }
+
+                        .rec-dot {
+                            position: fixed;
+                            top: 20px;
+                            right: 20px;
+                            display: flex;
+                            align-items: center;
+                            gap: 8px;
+                            font-family: 'Share Tech Mono', monospace;
+                            font-size: 12px;
+                            color: #ff0000;
+                            letter-spacing: 0.15em;
+                            z-index: 10;
+                            animation: recBlink 1.5s ease-in-out infinite;
+                        }
+
+                        .rec-dot::before {
+                            content: '';
+                            width: 10px;
+                            height: 10px;
+                            background: #ff0000;
+                            border-radius: 50%;
+                            box-shadow: 0 0 8px rgba(255, 0, 0, 0.8);
+                        }
+
+                        @keyframes flicker {
+                            0%, 93%, 95%, 97%, 100% { opacity: 1; }
+                            94% { opacity: 0.8; }
+                            96% { opacity: 0.9; }
+                        }
+
+                        @keyframes pulse {
+                            0%, 100% { opacity: 1; transform: scale(1); }
+                            50% { opacity: 0.5; transform: scale(0.8); }
+                        }
+
+                        @keyframes recBlink {
+                            0%, 100% { opacity: 1; }
+                            50% { opacity: 0; }
+                        }
+
+                        @media (max-width: 480px) {
+                            .links { gap: 12px; }
+                            .links a { padding: 8px 16px; font-size: 11px; }
+                            .modal-body { padding: 16px; }
+                            .modal-header { padding: 12px 16px; }
+                        }
+                    </style>
+                </head>
+                <body>
+                    <div class="rec-dot">REC</div>
+
+                    <div class="container">
+                        <h1>The HEAPS GOODS Co.</h1>
+                        <div class="tagline">Creators of heaps good apps, experiences, businesses, and people</div>
+
+                        <div class="status-bar">
+                            <div class="status-dot"></div>
+                            <span>SYSTEMS ONLINE — SYDNEY, AUSTRALIA</span>
+                        </div>
+
+                        <div class="links">
+                            <a onclick="openModal('contact')">CONTACT</a>
+                            <a onclick="openModal('projects')">PROJECTS</a>
+                            <a onclick="openModal('lab')">LAB</a>
+                        </div>
+                    </div>
+
+
+                    <div class="modal-overlay" id="contactModal">
+                        <div class="modal-panel">
+                            <div class="modal-header">
+                                <h2>CONTACT</h2>
+                                <button class="modal-close" onclick="closeModal('contact')">ESC</button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="contact-info">
+                                    <p>Reach out for collaborations, projects, or just to say g'day.</p>
+                                    <a href="mailto:info@heapsgoods.dev" class="contact-link">
+                                        <i class="fas fa-envelope"></i>
+                                        info@heapsgoods.dev
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-overlay" id="projectsModal">
+                        <div class="modal-panel">
+                            <div class="modal-header">
+                                <h2>PROJECTS</h2>
+                                <button class="modal-close" onclick="closeModal('projects')">ESC</button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="project-card">
+                                    <h3>NEUROPATH (IN-DEVELOPMENT)</h3>
+                                    <p>Cognitive training platform designed to sharpen mental acuity through adaptive neuroplasticity exercises. Tracks progress across memory, attention, and processing speed.</p>
+                                    <span class="project-tag">iOS</span>
+                                    <span class="project-tag">SWIFTUI</span>
+                                    <span class="project-tag">COGNITIVE</span>
+                                </div>
+                                <div class="project-card">
+                                    <h3>BRAIN FIT (IN-DEVELOPMENT)</h3>
+                                    <p>Daily brain fitness routines personalised to your cognitive profile. Short, targeted sessions that adapt in real-time to performance thresholds.</p>
+                                    <span class="project-tag">iOS</span>
+                                    <span class="project-tag">HEALTHKIT</span>
+                                    <span class="project-tag">FITNESS</span>
+                                </div>
+                                <div class="project-card">
+                                    <h3>INTANGIBLE</h3>
+                                    <p>Sporting Asset Optimization</p>
+                                    <span class="project-tag">ANALYTICS</span>
+                                    <span class="project-tag">OPTIMIZATION</span>
+                                </div>
+                                <div class="project-card">
+                                    <h3>APEX</h3>
+                                    <p>Systemic Risk &amp; Portfolio Horizon Command</p>
+                                    <span class="project-tag">RISK</span>
+                                    <span class="project-tag">PORTFOLIO</span>
+                                </div>
+                                <div class="project-card">
+                                    <h3>HEAPS GOODS CO.</h3>
+                                    <p>The studio itself — a vehicle for building heaps good apps, experiences, businesses, and people. More than software. A philosophy.</p>
+                                    <span class="project-tag">BRAND</span>
+                                    <span class="project-tag">STUDIO</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-overlay" id="labModal">
+                        <div class="modal-panel">
+                            <div class="modal-header">
+                                <h2>LAB</h2>
+                                <button class="modal-close" onclick="closeModal('lab')">ESC</button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="lab-item">
+                                    <h3>ADAPTIVE DIFFICULTY ENGINE</h3>
+                                    <p>Real-time difficulty calibration using Bayesian performance estimation. Dynamically adjusts challenge curves to maintain optimal cognitive load zones.</p>
+                                    <span class="lab-status prototype">PROTOTYPE</span>
+                                </div>
+                                <div class="lab-item">
+                                    <h3>SPATIAL MEMORY MAPPING</h3>
+                                    <p>Experimental visuospatial memory assessment using procedural environment generation. Tracks recall accuracy across increasing complexity thresholds.</p>
+                                    <span class="lab-status experiment">EXPERIMENT</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+        
+
+                    <div class="vhs-badge">PLAY ▶ SP 0:00:00</div>
+
+                    <script>
+                        function openModal(name) {
+                            var modal = document.getElementById(name + 'Modal');
+                            if (modal) {
+                                modal.classList.add('active');
+                                document.body.style.overflow = 'hidden';
+                            }
+                        }
+
+                        function closeModal(name) {
+                            var modal = document.getElementById(name + 'Modal');
+                            if (modal) {
+                                modal.classList.remove('active');
+                                document.body.style.overflow = '';
+                            }
+                        }
+
+                        document.querySelectorAll('.modal-overlay').forEach(function(overlay) {
+                            overlay.addEventListener('click', function(e) {
+                                if (e.target === overlay) {
+                                    overlay.classList.remove('active');
+                                    document.body.style.overflow = '';
+                                }
+                            });
+                        });
+
+                        document.addEventListener('keydown', function(e) {
+                            if (e.key === 'Escape') {
+                                document.querySelectorAll('.modal-overlay.active').forEach(function(modal) {
+                                    modal.classList.remove('active');
+                                });
+                                document.body.style.overflow = '';
+                            }
+                        });
+                    </script>
+                </body>
+                </html>
+        
+        
+        
+        
+        
